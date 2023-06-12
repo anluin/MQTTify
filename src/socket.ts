@@ -1,6 +1,7 @@
 import { Packet, PacketType } from "./packet/mod.ts";
 import { PacketDecoderStream } from "./packet/decoder_stream.ts";
 
+
 export type PacketEvent = {
     type: "packet",
     packet: Packet,

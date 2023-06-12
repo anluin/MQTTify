@@ -14,7 +14,6 @@ export type Byte = [
 
 export const textEncoder = new TextEncoder();
 
-
 export const encodeVariableByteInteger = (value: number) => {
     if (0 > value)
         throw Error("value out of range", { cause: value });

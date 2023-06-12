@@ -21,7 +21,9 @@ export const SubAckPacket = {
             })
             .unwrap()
     ),
-    decode: (_header: PacketHeader, decoder: PacketDecoder): SubAckPacket => {
-        throw new Error("unimplemented");
-    },
+    decode: (_header: PacketHeader, decoder: PacketDecoder): SubAckPacket => ({
+        type: PacketType.SubACK,
+        id: decoder.uint16(),
+        returnCodes: [ ...decoder.rest() ],
+    }),
 } as const;

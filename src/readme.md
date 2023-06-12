@@ -2,8 +2,8 @@
 
 Unfinished Implementation of the [MQTT v3.1.1](http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.pdf) protokoll.
 
-
 ## Server
+
 ```ts
 const handleConnection = async (connection: Connection) => {
     connection.addEventListener("subscribe", (event) => {
@@ -46,8 +46,8 @@ for await (const connection of await serve({
 }
 ```
 
-
 ## Client
+
 ```ts
 // server is specified via url:
 // mqtt(s)?://$username:$password@$hostname:$port
@@ -63,7 +63,6 @@ await client.publish("test", {
 
 await client.disconnect();
 ```
-
 
 ## Utils
 

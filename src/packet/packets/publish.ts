@@ -57,7 +57,7 @@ export const PublishPacket = {
     },
     decode: (header: PacketHeader, decoder: PacketDecoder): PublishPacket => {
         const topic = decoder.string();
-        const id = header.flags!.qos > 0 ? decoder.uint16() : -1;
+        const id = header.flags!.qos > 0 ? decoder.uint16() : 0;
         const {
             dup,
             ...rest

@@ -13,6 +13,11 @@ export const SubscribePacket = {
         encoder
             .header({
                 type: PacketType.Subscribe,
+                flags: {
+                    dup: false,
+                    qos: 1,
+                    retain: false,
+                }
             })
             .payload(encoder => {
                 encoder.uint16(packet.id);

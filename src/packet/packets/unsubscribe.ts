@@ -1,4 +1,4 @@
-import { PacketHeader, PacketType } from "../mod.ts";
+import { encoder, PacketHeader, PacketType } from "../mod.ts";
 import { PacketDecoder } from "../decoder.ts";
 
 
@@ -9,9 +9,20 @@ export type UnsubscribePacket = {
 };
 
 export const UnsubscribePacket = {
-    encode: (_packet: UnsubscribePacket): Uint8Array => {
-        throw new Error("unimplemented");
-    },
+    encode: (packet: UnsubscribePacket): Uint8Array => (
+        encoder
+            .header({
+                type: PacketType.Unsubscribe,
+            })
+            .payload(encoder => {
+                encoder.uint16(packet.id);
+
+                for (const topic of packet.topics) {
+                    encoder.string(topic);
+                }
+            })
+            .unwrap()
+    ),
     decode: (_header: PacketHeader, decoder: PacketDecoder): UnsubscribePacket => {
         const id = decoder.uint16();
         const topics: string[] = [];

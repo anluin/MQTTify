@@ -18,7 +18,8 @@ export const UnsubAckPacket = {
             })
             .unwrap()
     ),
-    decode: (_header: PacketHeader, decoder: PacketDecoder): UnsubAckPacket => {
-        throw new Error("unimplemented");
-    },
+    decode: (_header: PacketHeader, decoder: PacketDecoder): UnsubAckPacket => ({
+        type: PacketType.UnsubAck,
+        id: decoder.uint16(),
+    }),
 } as const;

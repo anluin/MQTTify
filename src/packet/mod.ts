@@ -104,7 +104,6 @@ export type Packet =
 
 export const encoder = new PacketEncoder();
 
-
 export const Packet = {
     encode: (packet: Packet) => {
         switch (packet.type) {

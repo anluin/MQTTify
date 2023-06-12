@@ -59,7 +59,7 @@ export abstract class ClientBase {
         const id = (
             message.qos ?? 0 > 0
                 ? this.nextPacketId()
-                : -1
+                : 0
         );
 
         for (let count = 0; count < defaults.retries.publish; ++count) {
@@ -216,7 +216,7 @@ export class Client extends ClientBase {
         const id = (
             qos ?? 0 > 0
                 ? this.nextPacketId()
-                : -1
+                : 0
         );
 
         await this.socket.send(PacketType.Subscribe, {
