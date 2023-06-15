@@ -1,75 +1,53 @@
 # MQTTify
 
-Unfinished Implementation of the [MQTT v3.1.1](http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.pdf) protokoll.
+> Implementation of the [MQTT v3.1.1](http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.pdf) protocol
 
-## Server
+This project is an implementation of the MQTT protocol using Deno. It includes classes and functions to encode and decode MQTT packets, as well as helpers to read and write packets from a connection.
 
-```ts
-const handleConnection = async (connection: Connection) => {
-    connection.addEventListener("subscribe", (event) => {
-        console.log(event);
-    });
+## Usage
 
-    connection.addEventListener("unsubscribe", (event) => {
-        console.log(event);
-    });
+To use the MQTT library, you can import the necessary classes and functions in your Deno project.
 
-    connection.addEventListener("publish", (event) => {
-        console.log(event);
-    });
+For example, to read a packet from a connection:
 
-    connection.addEventListener("disconnect", (event) => {
-        console.log(event);
-    });
-    
-    await connection.publish("welcome", "Hello, world!", {
-        // qos: QualityOfService.atMostOnce,
-        // retain: false,
-    });
+```typescript
+import { readPacket } from 'https://deno.land/x/mqttify/protocol/3.1.1/helper.ts';
 
-    // wait until client disconnects
-    await connection.disconnected();
-};
 
-for await (const connection of await serve({
-    auth(packet: Omit<ConnectPacket, "type">) {
-        // insert auth logic here
+for await (const connection of await Deno.listen({ port: 1883 })) {
+    const packet = await readPacket(connection);
 
-        return {
-            returnCode: ReturnCode.ConnectionAccepted,
-            sessionPresent: false,
-        };
-    },
-})) {
-    handleConnection(connection)
-        .catch(console.error);
+    console.log(packet);
 }
 ```
 
-## Client
+To write a packet to a connection:
 
-```ts
-// server is specified via url:
-// mqtt(s)?://$username:$password@$hostname:$port
-const client = new Client("mqtt://127.0.0.1:1883");
+```typescript
+import { writePacket } from 'https://deno.land/x/mqttify/protocol/3.1.1/helper.ts';
+import { PacketType } from "https://deno.land/x/mqttify/protocol/3.1.1/packet.ts";
 
-await client.connect();
 
-await client.subscribe("#");
-
-await client.publish("test", {
-    current,
+const connection = await Deno.connect({
+    hostname: 'mqtt.example.com',
+    port: 1883
 });
 
-await client.disconnect();
+await writePacket(connection, {
+    type: PacketType.Connect,
+    clientId: 'my-client-id',
+    cleanSession: true,
+    keepAlive: 60,
+});
 ```
 
-## Utils
+## Project Structure
 
-### Publish
+- `src/defaults.ts`: Contains default values for MQTT packet settings.
+- `src/utils/*.ts`: Contains a utility functions.
+- `src/protocol/3.1.1/packet/*.ts`: Contains types and functions for encoding and decoding individual types of MQTT packets.
+- `src/protocol/3.1.1/decode.ts`: Contains classes for decoding MQTT packets.
+- `src/protocol/3.1.1/encode.ts`: Contains classes for encoding MQTT packets.
+- `src/protocol/3.1.1/packet.ts`: Defines types and functions for encoding and decoding MQTT packets.
+- `src/protocol/3.1.1/helper.ts`: Contains helper functions for reading and writing MQTT packets.
 
-Simple one-liner to connect, publish and disconnect
-
-```ts
-await publish("mqtt://127.0.0.1:1883", "topic", "payload");
-```
