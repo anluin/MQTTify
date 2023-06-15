@@ -1,5 +1,0 @@
-{
-    "tasks": {
-        "serve": "deno test -A --check test/both.ts"
-    }
-}
