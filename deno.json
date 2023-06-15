@@ -1,5 +1,5 @@
 {
     "tasks": {
-        "serve": "deno test -A --check test/both.ts"
+        "test": "deno test -A --check --trace-ops test/**/*.ts"
     }
 }
