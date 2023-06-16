@@ -254,7 +254,7 @@ export class PacketDecoder {
         const elements: T[] = [];
 
         while (this.packet!.payload.cursor < this.packet!.payload.length) {
-            callback();
+            elements.push(callback());
         }
 
         return elements;
