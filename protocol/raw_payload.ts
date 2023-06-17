@@ -58,7 +58,7 @@ export class RawPayload {
 
     writeUint8(...values: Uint8[]) {
         for (const value of values) {
-            (this.bytes ??= [])[this.cursor.write++] = value as Uint8;
+            (this.bytes ??= [])[this.cursor.write++] = (value & 0xff) as Uint8;
         }
 
         this.capacity = Math.max(this.capacity, this.bytes.length);

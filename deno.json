@@ -1,6 +1,6 @@
 {
     "lock": false,
     "tasks": {
-        "test": "deno test -A --check ./**/*.ts"
+        "test": "deno test -A --check ./tests/**/*.ts"
     }
 }

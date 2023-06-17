@@ -27,14 +27,13 @@ export const ConnectPacket = {
                 (packet.username ? 2 ** 7 : 0) |
                 (packet.password ? 2 ** 6 : 0) |
                 (packet.will?.retain ? 2 ** 5 : 0) |
-                (((packet.will?.qos ?? 0) & 2) ? 4 ** 7 : 0) |
-                (((packet.will?.qos ?? 0) & 1) ? 3 ** 7 : 0) |
+                (((packet.will?.qos ?? 0) & 2) ? 2 ** 4 : 0) |
+                (((packet.will?.qos ?? 0) & 1) ? 2 ** 3 : 0) |
                 (packet.will ? 2 ** 2 : 0) |
                 (packet.cleanSession ? 2 ** 1 : 0)
             ) as Uint8)
             .writeUint16(packet.keepAlive as Uint16)
             .writeString(packet.clientId);
-
 
         if (packet.will) {
             payload.writeString(packet.will.topic);
@@ -74,7 +73,7 @@ export const ConnectPacket = {
         const usernameFlag = !!(flags & 2 ** 7);
         const passwordFlag = !!(flags & 2 ** 6);
         const cleanSessionFlag = !!(flags & 2);
-        const willFlag = (flags & 4);
+        const willFlag = !!(flags & 4);
         const willRetainFlag = willFlag ? !!(flags & 2 ** 5) : false;
         const willQosFlag = willFlag ? (flags & (16 + 8)) >> 3 : 0;
 
@@ -91,14 +90,20 @@ export const ConnectPacket = {
             keepAlive: rawPacket.payload!.readUint16(),
             clientId: rawPacket.payload!.readString(),
             cleanSession: cleanSessionFlag,
-            will: willFlag ? {
-                topic: rawPacket.payload!.readString(),
-                payload: Uint8Array.from(rawPacket.payload!.readByteArray()),
-                retain: willRetainFlag,
-                qos: willQosFlag,
-            } : undefined,
-            username: usernameFlag ? rawPacket.payload!.readString() : undefined,
-            password: passwordFlag ? rawPacket.payload!.readString() : undefined,
+            ...willFlag ? {
+                will: {
+                    topic: rawPacket.payload!.readString(),
+                    payload: Uint8Array.from(rawPacket.payload!.readByteArray()),
+                    retain: willRetainFlag,
+                    qos: willQosFlag,
+                },
+            } : {},
+            ...usernameFlag ? {
+                username: rawPacket.payload!.readString(),
+            } : {},
+            ...passwordFlag ? {
+                password: rawPacket.payload!.readString(),
+            } : {},
         };
     },
 } as const;
