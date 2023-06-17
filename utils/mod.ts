@@ -1,1 +1,1 @@
-export * from "./connection.ts";
+export * from "./intdef.ts";

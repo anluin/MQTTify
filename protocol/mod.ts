@@ -1,8 +1,7 @@
-export * from "./packet/connect.ts";
-export * from "./packet/connect.ts";
-export * from "./packet/publish.ts";
+export * from "./decoder/mod.ts";
+export * from "./encoder/mod.ts";
+export * from "./packet/mod.ts";
+export * from "./error/mod.ts";
 
-export * from "./decoder.ts";
-export * from "./encoder.ts";
 export * from "./packet.ts";
-export * from "./errors.ts";
+export * from "./raw_packet.ts";

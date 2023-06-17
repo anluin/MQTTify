@@ -1,10 +1,40 @@
 import { PacketType } from "../packet.ts";
+import { RawPacket } from "../raw_packet.ts";
+import { RawPayload } from "../raw_payload.ts";
+import { Uint16 } from "../../utils/intdef.ts";
 
 
 export interface PubRelPacket {
-    // header
-    readonly type: PacketType.PubRel;
+    type: PacketType.PubRel;
 
-    // payload
-    readonly id: number;
+    id: number;
 }
+
+export const PubRelPacket = {
+    encode(packet: PubRelPacket): RawPacket {
+        const payload = new RawPayload();
+
+        payload.writeUint16(packet.id as Uint16);
+
+        return {
+            header: {
+                type: packet.type,
+                flags: {
+                    dup: false,
+                    qos: 1,
+                    retain: false,
+                },
+            },
+            payload,
+        };
+    },
+    decode(rawPacket: RawPacket): PubRelPacket {
+        if (rawPacket.header?.type !== PacketType.PubRel)
+            throw new Error(`unexpected packet-type: ${rawPacket.header?.type}`);
+
+        return {
+            type: PacketType.PubRel,
+            id: rawPacket.payload.readUint16(),
+        };
+    },
+} as const;
