@@ -3,12 +3,20 @@ import { PacketDecoder } from "../../protocol/decoder/packet.ts";
 import { PacketEncoder } from "../../protocol/encoder/packet.ts";
 
 
-const mapController = (controller: TransformStreamDefaultController<Uint8Array>, encoder: PacketEncoder): TransformStreamDefaultController<Packet> => ({
-    desiredSize: controller.desiredSize,
-    enqueue: chunk => controller.enqueue(encoder.encode(chunk)),
-    error: (reason) => controller.error(reason),
-    terminate: () => controller.terminate(),
-});
+const controllers: WeakMap<TransformStreamDefaultController<Uint8Array>, TransformStreamDefaultController<Packet>> = new WeakMap();
+
+const mapController = (controller: TransformStreamDefaultController<Uint8Array>, encoder: PacketEncoder) => {
+    if (!controllers.has(controller)) {
+        controllers.set(controller, {
+            desiredSize: controller.desiredSize,
+            enqueue: chunk => controller.enqueue(encoder.encode(chunk)),
+            error: (reason) => controller.error(reason),
+            terminate: () => controller.terminate(),
+        });
+    }
+
+    return controllers.get(controller)!;
+};
 
 export class PacketTransformTransformer implements Transformer<Uint8Array, Uint8Array> {
     private readonly decoder: PacketDecoder = new PacketDecoder({ fatal: true });

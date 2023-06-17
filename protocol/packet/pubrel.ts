@@ -18,7 +18,7 @@ export const PubRelPacket = {
 
         return {
             header: {
-                type: packet.type,
+                type: PacketType.PubRel,
                 flags: {
                     dup: false,
                     qos: 1,

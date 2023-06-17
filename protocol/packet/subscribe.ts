@@ -24,7 +24,7 @@ export const SubscribePacket = {
 
         return {
             header: {
-                type: packet.type,
+                type: PacketType.Subscribe,
                 flags: {
                     dup: false,
                     qos: 1,

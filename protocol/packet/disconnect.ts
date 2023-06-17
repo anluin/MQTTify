@@ -13,7 +13,7 @@ export const DisconnectPacket = {
 
         return {
             header: {
-                type: packet.type,
+                type: PacketType.Disconnect,
             },
             payload,
         };

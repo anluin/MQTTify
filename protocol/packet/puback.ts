@@ -18,7 +18,7 @@ export const PubAckPacket = {
 
         return {
             header: {
-                type: packet.type,
+                type: PacketType.PubAck,
             },
             payload,
         };

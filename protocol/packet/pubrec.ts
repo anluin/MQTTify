@@ -18,7 +18,7 @@ export const PubRecPacket = {
 
         return {
             header: {
-                type: packet.type,
+                type: PacketType.PubRec,
             },
             payload,
         };

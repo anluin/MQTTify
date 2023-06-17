@@ -18,7 +18,7 @@ export const UnsubAckPacket = {
 
         return {
             header: {
-                type: packet.type,
+                type: PacketType.UnsubAck,
             },
             payload,
         };

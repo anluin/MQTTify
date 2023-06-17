@@ -23,12 +23,7 @@ export const SubAckPacket = {
 
         return {
             header: {
-                type: packet.type,
-                flags: {
-                    dup: false,
-                    qos: 1,
-                    retain: false,
-                },
+                type: PacketType.SubAck,
             },
             payload,
         };

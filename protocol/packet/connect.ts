@@ -51,7 +51,7 @@ export const ConnectPacket = {
 
         return {
             header: {
-                type: packet.type,
+                type: PacketType.Connect,
             },
             payload,
         };
@@ -83,7 +83,7 @@ export const ConnectPacket = {
         }
 
         return {
-            type: rawPacket.header.type,
+            type: PacketType.Connect,
             protocol: {
                 name: protocolName,
                 level: protocolLevel,

@@ -23,7 +23,7 @@ export const UnsubscribePacket = {
 
         return {
             header: {
-                type: packet.type,
+                type: PacketType.Unsubscribe,
                 flags: {
                     dup: false,
                     qos: 1,

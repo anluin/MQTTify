@@ -18,7 +18,7 @@ export const PubCompPacket = {
 
         return {
             header: {
-                type: packet.type,
+                type: PacketType.PubComp,
             },
             payload,
         };

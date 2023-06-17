@@ -13,7 +13,7 @@ export const PingRespPacket = {
 
         return {
             header: {
-                type: packet.type,
+                type: PacketType.PingResp,
             },
             payload,
         };

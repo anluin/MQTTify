@@ -25,7 +25,7 @@ export const PublishPacket = {
 
         return {
             header: {
-                type: packet.type,
+                type: PacketType.Publish,
                 flags: {
                     dup: packet.dup,
                     qos: packet.qos ?? 0,

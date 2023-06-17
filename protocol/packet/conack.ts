@@ -20,7 +20,7 @@ export const ConnAckPacket = {
 
         return {
             header: {
-                type: packet.type,
+                type: PacketType.ConnAck,
             },
             payload,
         };
