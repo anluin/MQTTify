@@ -89,7 +89,7 @@ export type ProtocolName = "MQTT";
 
 export type ProtocolLevel
     = 4  // v3.1.1
- // | 5  // v5.0   // TODO: Support MQTT 5.0
+// | 5  // v5.0   // TODO: Support MQTT 5.0
 
 export interface Protocol {
     name: "MQTT",
