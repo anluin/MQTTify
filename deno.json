@@ -1,6 +1,7 @@
 {
     "lock": false,
     "tasks": {
-        "test": "deno test -A --check ./tests/**/*.ts"
+        "test": "deno test -A --check ./mod.test.ts",
+        "coverage": "rm -rf cov_profile && deno test --coverage=cov_profile -A --check ./mod.test.ts && deno coverage cov_profile --html"
     }
 }
